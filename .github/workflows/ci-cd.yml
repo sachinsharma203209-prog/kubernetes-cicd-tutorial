@@ -24,8 +24,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
+            ghcr.io/sachin203209:latest
+            ghcr.io/sachin203209:${{ github.sha }}
       - name: Update GitOps repository
         shell: bash
         env:
@@ -39,13 +39,13 @@ jobs:
           rm -rf gitops
           
           # Clone repository using HTTPS URL without token
-          git clone https://github.com/rslim087a/grade-api-gitops.git gitops
+          git clone https://github.com/sachinsharma203209-prog/argocd-kubernetes-gitops-tutorial.git
           cd gitops
           
           if [[ "$OSTYPE" == "darwin"* ]]; then
-            sed -i '' "s|image: ghcr.io/${{ github.repository }}:.*|image: ghcr.io/${{ github.repository }}:${{ github.sha }}|g" deployment.yaml
+            sed -i '' "s|image: ghcr.io/sachin203209:.*|image: ghcr.io/sachin203209:${{ github.sha }}|g" deployment.yaml
           else
-            sed -i "s|image: ghcr.io/${{ github.repository }}:.*|image: ghcr.io/${{ github.repository }}:${{ github.sha }}|g" deployment.yaml
+            sed -i "s|image: ghcr.io/sachin203209:.*|image: ghcr.io/sachin203209:${{ github.sha }}|g" deployment.yaml
           fi
           
           # Commit changes
