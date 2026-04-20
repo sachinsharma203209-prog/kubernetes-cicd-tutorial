@@ -14,7 +14,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: sachin203209
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -24,8 +24,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/sachin203209:latest
-            ghcr.io/sachin203209:${{ github.sha }}
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
       - name: Update GitOps repository
         shell: bash
         env:
@@ -39,13 +39,13 @@ jobs:
           rm -rf gitops
           
           # Clone repository using HTTPS URL without token
-          git clone https://github.com/sachinsharma203209-prog/argocd-kubernetes-gitops-tutorial.git
+          git clone https://github.com/rslim087a/grade-api-gitops.git gitops
           cd gitops
           
           if [[ "$OSTYPE" == "darwin"* ]]; then
-            sed -i '' "s|image: ghcr.io/sachin203209:.*|image: ghcr.io/sachin203209:${{ github.sha }}|g" deployment.yaml
+            sed -i '' "s|image: ghcr.io/${{ github.repository }}:.*|image: ghcr.io/${{ github.repository }}:${{ github.sha }}|g" deployment.yaml
           else
-            sed -i "s|image: ghcr.io/sachin203209:.*|image: ghcr.io/sachin203209:${{ github.sha }}|g" deployment.yaml
+            sed -i "s|image: ghcr.io/${{ github.repository }}:.*|image: ghcr.io/${{ github.repository }}:${{ github.sha }}|g" deployment.yaml
           fi
           
           # Commit changes
