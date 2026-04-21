@@ -1,10 +1,11 @@
-FROM node:14
+FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy package files first
+# Copy package files first (layer cache)
 COPY src/package*.json ./
-RUN npm install
+
+RUN npm install --omit=dev
 
 # Copy source code
 COPY src/ ./
