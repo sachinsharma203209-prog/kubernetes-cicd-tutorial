@@ -48,14 +48,17 @@ jobs:
           GIT_TOKEN: ${{ secrets.GITOPS_PAT }}
         run: |
           git config --global credential.helper store
-          echo "https://${GIT_TOKEN}:x-oauth-basic@github.com" > ~/.git-credentials
+          echo "https://${GIT_TOKEN}@github.com" > ~/.git-credentials
 
           rm -rf gitops
 
           git clone https://github.com/sachinsharma203209-prog/grade-api-gitops.git gitops
           cd gitops
 
-          # Fix image to your repo
+          # Set remote URL with token
+          git remote set-url origin https://${GIT_TOKEN}@github.com/sachinsharma203209-prog/grade-api-gitops.git
+
+          # Replace image in deployment.yaml
           sed -i "s|image: ghcr.io/.*kubernetes-cicd-tutorial:.*|image: ghcr.io/sachinsharma203209-prog/kubernetes-cicd-tutorial:${{ github.sha }}|g" deployment.yaml
 
           cat deployment.yaml
@@ -67,4 +70,5 @@ jobs:
           # Only commit if something changed
           git diff --staged --quiet || git commit -m "Update image to ${{ github.sha }}"
 
-          git push https://${GIT_TOKEN}@github.com/sachinsharma203209-prog/grade-api-gitops.git main
+          # Push using origin
+          git push origin main
