@@ -15,7 +15,7 @@ To follow along with this tutorial, you'll need:
 ```bashhh
 helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
-kubectl create namespace argocd
+kubectl create namespace argocddd
 helm install argocd argo/argo-cd --namespace argocd --version 7.7.0
 ```
 
